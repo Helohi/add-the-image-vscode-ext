@@ -1,3 +1,4 @@
+### ‼️Fully AI generated‼️
 # Add The Image: save a copied image into an existing Markdown image link (VS Code extension)
 
 **Add The Image** is a Visual Studio Code extension that fills in Markdown image links you have already written. Hover over `![description](path/to/image.png)` and click **+ Add copied image**. The extension saves the image from your clipboard to that exact path, under that exact file name, and creates the folders if needed. If the path is empty, `![description]()`, it names the file after the description and writes the path into the link for you.
