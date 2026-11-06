@@ -1,0 +1,90 @@
+{
+  "name": "add-the-image",
+  "displayName": "Add The Image – Paste Clipboard Image into Markdown Image Links",
+  "description": "Hover a Markdown image link ![alt](path) with an empty or missing path and click + to save the copied image (screenshot or file) to that exact path and file name. Fills empty paths, fixes broken/missing images, previews and replaces images.",
+  "version": "0.1.0",
+  "publisher": "Helohi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Helohi/add-the-image.git"
+  },
+  "homepage": "https://github.com/Helohi/add-the-image#readme",
+  "bugs": {
+    "url": "https://github.com/Helohi/add-the-image/issues"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "markdown",
+    "image",
+    "paste image",
+    "clipboard",
+    "clipboard image",
+    "paste",
+    "save image",
+    "insert image",
+    "markdown image",
+    "image link",
+    "empty path",
+    "missing image",
+    "broken image",
+    "image placeholder",
+    "screenshot",
+    "hover",
+    "rename image",
+    "readme",
+    "documentation",
+    "docs",
+    "md"
+  ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "addTheImage.pasteIntoLink",
+        "title": "Add The Image: Save clipboard image into the image link under the cursor"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "addTheImage.pasteIntoLink",
+        "key": "ctrl+alt+i",
+        "mac": "cmd+alt+i",
+        "when": "editorTextFocus && editorLangId == markdown"
+      }
+    ],
+    "configuration": {
+      "title": "Add The Image",
+      "properties": {
+        "addTheImage.defaultFolder": {
+          "type": "string",
+          "default": "images",
+          "description": "Folder (relative to the Markdown file) used when the link path is empty, e.g. ![cat]()."
+        },
+        "addTheImage.askForNameWhenEmpty": {
+          "type": "boolean",
+          "default": true,
+          "description": "When the link path is empty, let you confirm or edit the generated file path before saving."
+        },
+        "addTheImage.showForExistingImages": {
+          "type": "boolean",
+          "default": true,
+          "description": "Also show a 'Replace image' button when hovering links whose file already exists."
+        }
+      }
+    }
+  }
+}
