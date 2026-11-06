@@ -66,12 +66,7 @@ class ImageLinkHoverProvider {
     md.isTrusted = { enabledCommands: [CMD] };
     if (justSaved.get(abs)) md.appendMarkdown(`$(check) **Saved** \`${target}\`\n\n`);
     md.appendMarkdown(`[${label}](command:${CMD}?${args} "Save the clipboard image into this link") · ${detail}`);
-    if (exists) {
-      // Preview of the current image; mtime query busts the renderer's cache after a replace.
-      const mtime = fs.statSync(abs).mtimeMs;
-      const src = vscode.Uri.file(abs).with({ query: `v=${Math.round(mtime)}` }).toString();
-      md.appendMarkdown(`\n\n![preview](${src}|width=240)`);
-    }
+    // No image preview here: VS Code's built-in Markdown hover already shows one.
     return new vscode.Hover(md, range);
   }
 }
@@ -98,6 +93,9 @@ async function pasteIntoLink(arg) {
     busy.add(key);
   }
 
+  // Close the hover right away; progress shows in the status bar.
+  vscode.commands.executeCommand('editor.action.hideHover').then(undefined, () => {});
+
   let result;
   try {
     if (!doc) doc = await vscode.workspace.openTextDocument(vscode.Uri.parse(arg.uri));
@@ -112,27 +110,21 @@ async function pasteIntoLink(arg) {
   }
   if (!result) return;
 
-  // Success feedback: badge in the hover, notification, and re-open the hover with the preview.
+  // Success feedback: "Saved" badge on the next hover + self-closing notification.
   justSaved.set(result.abs, true);
   setTimeout(() => justSaved.delete(result.abs), 8000);
 
-  const editor = vscode.window.visibleTextEditors.find((e) => e.document.uri.toString() === doc.uri.toString());
-  if (editor) {
-    const updated = findImageLinkAt(doc.lineAt(line).text, character) || findImageLinkAt(doc.lineAt(line).text, result.linkStart);
-    const col = updated ? updated.pathStart : character;
-    const p = new vscode.Position(line, col);
-    await vscode.window.showTextDocument(editor.document, editor.viewColumn);
-    editor.selection = new vscode.Selection(p, p);
-    editor.revealRange(new vscode.Range(p, p));
-    await vscode.commands.executeCommand('editor.action.showHover');
-  }
-
-  vscode.window
-    .showInformationMessage(`Image saved: ${result.rel}`, 'Open Image')
-    .then((choice) => {
-      if (choice === 'Open Image') vscode.commands.executeCommand('vscode.open', vscode.Uri.file(result.abs));
-    });
+  // Self-closing notification (regular notifications have no timeout API).
+  vscode.window.withProgress(
+    { location: vscode.ProgressLocation.Notification, title: `$(check) Image saved: ${result.rel}` },
+    async (progress) => {
+      progress.report({ increment: 100 });
+      await sleep(2500);
+    }
+  );
 }
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /** Does the actual work. Returns { abs, rel, linkStart } on success, undefined if cancelled/failed. */
 async function addImage(doc, line, character) {

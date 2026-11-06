@@ -1,7 +1,7 @@
 {
   "name": "add-the-image",
   "displayName": "Add The Image – Paste Clipboard Image into Markdown Image Links",
-  "description": "Hover a Markdown image link ![alt](path) with an empty or missing path and click + to save the copied image (screenshot or file) to that exact path and file name. Fills empty paths, fixes broken/missing images, previews and replaces images.",
+  "description": "Hover a Markdown image link ![alt](path) with an empty or missing path and click + to save the copied image (screenshot or file) to that exact path and file name. Fills empty paths, fixes broken/missing images, replaces existing images.",
   "version": "0.1.0",
   "publisher": "Helohi",
   "license": "MIT",

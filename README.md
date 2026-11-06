@@ -7,7 +7,7 @@ It works with screenshots, copied bitmaps, and image files copied in your file m
 
 ![Hovering a Markdown image link with a missing file shows the "+ Add copied image" button](media/hover-add-button.png)
 
-After saving, the hover reopens with a preview of the saved image and a **Replace with copied image** button:
+When the image file exists, hovering shows a **Replace with copied image** button, next to VS Code's own image preview:
 
 ![After saving, the hover shows a preview of the image and a "Replace with copied image" button](media/hover-replace-preview.png)
 
@@ -27,8 +27,8 @@ Add The Image works on **the link that's already there**. You don't need to save
 - **Empty paths.** For `![My cat photo]()`, it suggests `images/my-cat-photo.png`, lets you edit the name, then saves the image and updates the link.
 - **Missing files.** For `![x](docs/img/x.png)` where the file doesn't exist, it saves the image to exactly that path and creates the folders.
 - **Missing or mismatched extensions.** `![x](images/x)` becomes `images/x.png`. If the link says `.jpg` but the clipboard holds a PNG, it asks whether to rename.
-- **Replace existing images.** When the file exists, the hover shows a preview and a **Replace with copied image** button. It asks before overwriting.
-- **Feedback.** A status-bar spinner runs while it works, then you get a "saved" notification with **Open Image**, and the hover reopens with a preview.
+- **Replace existing images.** When the file exists, the hover shows a **Replace with copied image** button. It asks before overwriting.
+- **Feedback.** The hover closes when you click, a status-bar spinner runs while it works, and a "saved" notification closes itself after a few seconds.
 - **Copied files or raw image data.** It accepts a screenshot or any copied `.png .jpg .gif .webp .svg .bmp .tiff .avif` file.
 - **Path handling.** Paths are relative to the `.md` file, and `/…` is relative to the workspace root. It understands `<paths with spaces.png>`, `%20`, and `"titles"`.
 - **Keyboard shortcut.** Put the cursor on the link and press **Ctrl+Alt+I** (**Cmd+Alt+I** on macOS).
@@ -62,7 +62,7 @@ VS Code's clipboard API can only read text, so on Linux a small helper is needed
 | ----------------------------------- | -------- | ------------------------------------------------------------------ |
 | `addTheImage.defaultFolder`         | `images` | Folder (relative to the `.md` file) for links with an empty path   |
 | `addTheImage.askForNameWhenEmpty`   | `true`   | Let you confirm or edit the generated file name                    |
-| `addTheImage.showForExistingImages` | `true`   | Show the preview and **Replace** button on links whose file exists |
+| `addTheImage.showForExistingImages` | `true`   | Show the **Replace** button on links whose file exists |
 
 ## FAQ
 
